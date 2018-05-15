@@ -6,7 +6,7 @@ get '/' do
   erb :index
 end
 
-get '/healthz' do
+get '/health' do
   'ok'
 end
 
@@ -14,7 +14,11 @@ get '/hostname' do
   Socket.gethostname
 end
 
-get '/admin/users' do
+get '/version' do
+  'v1'
+end
+
+get '/internal/v1/users' do
   content_type :json
 
   {
@@ -36,7 +40,7 @@ get '/admin/users' do
   }.to_json
 end
 
-post '/v1/login' do
+post '/external/v1/login' do
   content_type :json
   
   {
@@ -45,7 +49,7 @@ post '/v1/login' do
   }.to_json
 end
 
-post '/v1/signup' do
+post '/external/v1/signup' do
   content_type :json
   status 201
   
