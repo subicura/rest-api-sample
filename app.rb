@@ -15,7 +15,7 @@ get '/hostname' do
 end
 
 get '/version' do
-  'v1'
+  'v2'
 end
 
 get '/internal/v1/users' do
