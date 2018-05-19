@@ -1,6 +1,7 @@
 require 'sinatra'
 require 'socket'
 require 'json'
+require 'httparty'
 
 get '/' do
   erb :index
@@ -58,6 +59,18 @@ post '/external/v1/signup' do
     "name": "subicura"
   }.to_json
 end
+
+get '/external/v1/details' do
+  HTTParty.get('http://details:9080/details/0')
+
+  content_type :json
+  status 200
+  
+  {
+    "message": "Details"
+  }.to_json
+end
+
 
 get '/external/v1/200' do
   content_type :json
