@@ -58,3 +58,31 @@ post '/external/v1/signup' do
     "name": "subicura"
   }.to_json
 end
+
+get '/external/v1/200' do
+  content_type :json
+  status 200
+  
+  {
+    "message": "200 Ok"
+  }.to_json
+end
+
+
+get '/external/v1/400' do
+  content_type :json
+  status 400
+  
+  {
+    "message": "400 Bad Request"
+  }.to_json
+end
+
+get '/external/v1/500' do
+  content_type :json
+  status 500
+  
+  {
+    "message": "500 Internal Server Error"
+  }.to_json
+end
