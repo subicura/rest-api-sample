@@ -3,6 +3,16 @@ require 'socket'
 require 'json'
 require 'httparty'
 
+INCOMING_HEADERS = [
+  'x-request-id',
+  'x-b3-traceid',
+  'x-b3-spanid',
+  'x-b3-parentspanid',
+  'x-b3-sampled',
+  'x-b3-flags',
+  'x-ot-span-context'
+]
+
 get '/' do
   erb :index
 end
@@ -61,7 +71,8 @@ post '/external/v1/signup' do
 end
 
 get '/external/v1/details' do
-  HTTParty.get('http://details:9080/details/0')
+  # add hint - https://istio.io/docs/tasks/telemetry/distributed-tracing.html
+  HTTParty.get('http://details:9080/details/0', headers: zipkin_headers)
 
   content_type :json
   status 200
@@ -98,4 +109,15 @@ get '/external/v1/500' do
   {
     "message": "500 Internal Server Error"
   }.to_json
+end
+
+
+def zipkin_headers
+  ret = {}
+
+  INCOMING_HEADERS.each do |h|
+    ret[h] = env["HTTP_#{h.upcase.gsub('-', '_')}"] 
+  end
+
+  ret
 end
